@@ -87,13 +87,6 @@ main-project/
 VITE_API_URL=https://freshco-backend.onrender.com
 ```
 
-### 🔹 Backend (.env)
-
-```
-PORT=5000
-MONGO_URI=mongodb+srv://siyammm74_db_user:eq8PH8lpQuyRW1do@cluster0.4obczji.mongodb.net/freshco?retryWrites=true&w=majority
-JWT_SECRET=freshco_secret_key
-```
 
 ---
 
