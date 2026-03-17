@@ -35,7 +35,7 @@ function Products() {
 
         const res = await axios.get(`${API}/api/products`);
 
-        setProductsData(res.data);
+       setProductsData(Array.isArray(res.data) ? res.data : []); //setProductsData(res.data);
 
       } catch (error) {
 
@@ -52,8 +52,10 @@ function Products() {
   const isInWishlist = (id) => wishlist.some((item) => item._id === id);
 
   // FILTERING
-  const filteredProducts = productsData.filter((item) => {
+  //const filteredProducts = productsData.filter((item) => {
 
+  const filteredProducts = Array.isArray(productsData)
+  ? productsData.filter((item) => {
     if (
       searchQuery &&
       !item.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -80,31 +82,48 @@ function Products() {
 
     return true;
 
-  });
+  }):
+     [];
 
   // SORTING
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
+  const sortedProducts = Array.isArray(filteredProducts)
+  ? [...filteredProducts].sort((a, b) => {
+      switch (sortBy) {
+        case "price-low":
+          return a.price - b.price;
+        case "price-high":
+          return b.price - a.price;
+        case "rating":
+          return b.rating - a.rating;
+        case "newest":
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        default:
+          return 0;
+      }
+    })
+  : [];
+  // const sortedProducts = [...filteredProducts].sort((a, b) => {
 
-    switch (sortBy) {
+  //   switch (sortBy) {
 
-      case "price-low":
-        return a.price - b.price;
+  //     case "price-low":
+  //       return a.price - b.price;
 
-      case "price-high":
-        return b.price - a.price;
+  //     case "price-high":
+  //       return b.price - a.price;
 
-      case "rating":
-        return b.rating - a.rating;
+  //     case "rating":
+  //       return b.rating - a.rating;
 
-      case "newest":
-        return new Date(b.createdAt) - new Date(a.createdAt);
+  //     case "newest":
+  //       return new Date(b.createdAt) - new Date(a.createdAt);
 
-      default:
-        return 0;
+  //     default:
+  //       return 0;
 
-    }
+  //   }
 
-  });
+  // });
 
   return (
 
@@ -173,8 +192,9 @@ function Products() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
 
-            {sortedProducts.map((item) => (
-
+            {/* {sortedProducts.map((item) => ( */}
+{Array.isArray(sortedProducts) &&
+  sortedProducts.map((item) => (
               <div
                 key={item._id}
                 className="group relative bg-white p-4 border border-gray-100 rounded-xl shadow-sm hover:shadow-xl hover:border-green-400 transition-all duration-300"
