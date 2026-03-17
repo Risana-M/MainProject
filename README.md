@@ -102,7 +102,7 @@ JWT_SECRET=freshco_secret_key
 ### 1️⃣ Clone the repo
 
 ```
-git clone https://github.com/your-username/your-repo.git
+git clone https://github.com/Risana-M/MainProject.git
 cd main-project
 ```
 
