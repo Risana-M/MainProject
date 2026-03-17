@@ -1,0 +1,132 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import { loginSuccess } from "../features/authSlice";
+
+const API = import.meta.env.VITE_API_URL;
+
+const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage("");
+    setLoading(true);
+
+    try {
+      const { data } = await axios.post(
+        `${API}/api/auth/login`,
+        formData
+      );
+
+      // Save in Redux
+      dispatch(loginSuccess(data));
+
+      // Save in localStorage
+      localStorage.setItem("userInfo", JSON.stringify(data));
+
+      navigate("/");
+    } catch (error) {
+      setErrorMessage(
+        error.response?.data?.message || "Login failed. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-green-50 flex items-center justify-center p-6">
+      <div className="bg-white w-full max-w-md p-10 rounded-[3rem] shadow-lg border border-green-100">
+
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-black text-green-800 mb-2 tracking-tight">
+            Welcome Back 🌱
+          </h2>
+          <p className="text-gray-500">
+            Login to continue shopping fresh & organic
+          </p>
+        </div>
+
+        {errorMessage && (
+          <div className="mb-4 text-red-500 text-sm text-center">
+            {errorMessage}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+
+          <div>
+            <label className="text-xs font-bold text-gray-500 ml-4 mb-1 block">
+              EMAIL ADDRESS
+            </label>
+            <input
+              type="email"
+              name="email"
+              placeholder="name@gmail.com"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-green-500 outline-none transition-all"
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-bold text-gray-500 ml-4 mb-1 block">
+              PASSWORD
+            </label>
+            <input
+              type="password"
+              name="password"
+              placeholder="••••••••"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              className="w-full p-4 bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-green-500 outline-none transition-all"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-green-700 text-white py-4 rounded-2xl font-bold text-lg hover:bg-green-800 hover:shadow-lg transition-all duration-300 mt-4"
+          >
+            {loading ? "Signing In..." : "Sign In"}
+          </button>
+        </form>
+
+        <div className="mt-8 text-center">
+          <p className="text-gray-500 text-sm">
+            Don't have an account?{" "}
+            <Link
+              to="/signup"
+              className="text-green-700 font-bold hover:underline"
+            >
+              Create one now
+            </Link>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default Login;
