@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function EditProduct() {
 
   const { id } = useParams();
@@ -18,7 +20,7 @@ function EditProduct() {
 
     const fetchProduct = async () => {
 
-      const res = await fetch(`http://localhost:5000/api/products/${id}`);
+      const res = await fetch(`${API_URL}/api/products/${id}`);
       const data = await res.json();
 
       setName(data.name);
@@ -39,7 +41,7 @@ function EditProduct() {
 
     e.preventDefault();
 
-    await fetch(`http://localhost:5000/api/products/admin/update/${id}`, {
+    await fetch(`${API_URL}/api/products/admin/update/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
