@@ -22,11 +22,11 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true }));
-app.use(cors());
-// app.use(cors({
-//   origin: "https://your-frontend-url.vercel.app",
-//   credentials: true
-// }));
+// app.use(cors());
+app.use(cors({
+  origin: "https://your-frontend.vercel.app",
+  credentials: true
+}));
 
 
 app.use("/api/auth", authRoutes);
