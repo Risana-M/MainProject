@@ -14,10 +14,10 @@ function Home() {
   useEffect(() => {
     const fetchDeals = async () => {
       try {
-        const { data } = await axios.get(await axios.get(`${API}/api/products`));
+        const { data } = await axios.get(`${API}/api/products`);
 
         // take first 10 products for deals
-        setHomeDeals(data.slice(0, 5));
+      setHomeDeals(Array.isArray(data) ? data.slice(0, 5) : []);
       } catch (error) {
         console.error(error);
       }
@@ -89,7 +89,8 @@ function Home() {
 
           <div className="flex overflow-x-auto gap-6 p-6 no-scrollbar scroll-smooth">
 
-            {homeDeals.map((item) => (
+            {Array.isArray(homeDeals) &&
+homeDeals.map((item) => (//homeDeals.map((item) => (
 
               <div
                 key={item._id}
