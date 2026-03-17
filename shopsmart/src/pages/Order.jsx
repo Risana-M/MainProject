@@ -20,8 +20,8 @@ function Orders() {
             },
           }
         );
-
-        setOrders(data);
+        console.log("ORDERS RESPONSE:", data);
+        setOrders(Array.isArray(data) ? data : []);  // setOrders(data);
       } catch (error) {
         console.error(error);
       }
@@ -49,7 +49,8 @@ function Orders() {
       {orders.length === 0 ? (
         <p>No orders yet 🧾</p>
       ) : (
-        orders.map((order) => (
+        Array.isArray(orders) &&
+        orders.map((order) => ( //orders.map((order) => (
           <div key={order._id} className="bg-white p-4 rounded shadow mb-4">
             <p className="font-semibold">
               Order ID: {order._id}
