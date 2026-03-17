@@ -1,0 +1,25 @@
+# node modules
+node_modules/
+backend/node_modules/
+shopsmart/node_modules/
+
+# environment files (IMPORTANT)
+.env
+backend/.env
+shopsmart/.env
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# build files
+dist/
+build/
+
+# uploads (optional)
+uploads/
