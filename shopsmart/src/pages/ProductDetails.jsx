@@ -17,22 +17,39 @@ function ProductDetails() {
 
   // Fetch products from backend
   useEffect(() => {
-    axios
-      .get(axios.get(`${API}/api/products`))
-      .then((res) => {
+  axios
+    .get(`${API}/api/products`)
+    .then((res) => {
 
-        setProducts(res.data);
+      setProducts(res.data);
 
-        const foundProduct = res.data.find(
-          (p) => p._id === id
-        );
+      const foundProduct = res.data.find(
+        (p) => p._id === id
+      );
 
-        setProduct(foundProduct);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [id]);
+      setProduct(foundProduct);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}, [id]);
+  // useEffect(() => {
+  //   axios
+  //     .get(axios.get(`${API}/api/products`))
+  //     .then((res) => {
+
+  //       setProducts(res.data);
+
+  //       const foundProduct = res.data.find(
+  //         (p) => p._id === id
+  //       );
+
+  //       setProduct(foundProduct);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, [id]);
 
   if (!product) {
     return (

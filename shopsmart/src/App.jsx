@@ -19,6 +19,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AddProduct from "./pages/AddProduct";
 import EditProduct from "./pages/EditProduct";
 import AdminRoute from "./components/AdminRoute";
+import AdminUsers from "./pages/AdminUsers";
+import AdminOrders from "./pages/AdminOrders";
 
 // NEW AUTH PAGES
 import Login from "./pages/Login";
@@ -79,7 +81,8 @@ function App() {
           }
         />
 
-
+        <Route path="/admin/users" element={<AdminUsers />} />
+        <Route path="/admin/orders" element={<AdminOrders />} />
 
 
         {/* AUTH PAGES */}

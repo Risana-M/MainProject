@@ -11,7 +11,7 @@ import authRoutes from "./routes/authRoutes.js";//login/signup
 import productRoutes from "./routes/productRoutes.js";//product CRUD
 import orderRoutes from "./routes/orderRoutes.js";//order creation
 import contactRoutes from "./routes/contactRoutes.js";// concat form
-
+import userRoutes from "./routes/userRoutes.js";
 // Import custom middleware for handling 404 and server errors
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
@@ -35,6 +35,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/users", userRoutes);
 
 app.use("/uploads", express.static("uploads"));
 

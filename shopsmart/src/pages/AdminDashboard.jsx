@@ -74,21 +74,21 @@ function AdminDashboard() {
           FreshCo Admin
         </h2>
 
-        <ul className="space-y-3">
+     
+<ul className="space-y-3">
+  <Link to="/freshco-admin">
+    <li className="bg-green-600 p-3 rounded cursor-pointer">Products</li>
+  </Link>
 
-          <li className="bg-green-600 p-3 rounded cursor-pointer">
-            Products
-          </li>
+  {/* Make sure these paths match your App.js/main.js routes */}
+  <Link to="/admin/orders">
+    <li className="p-3 hover:bg-green-600 rounded cursor-pointer">Orders</li>
+  </Link>
 
-          <li className="p-3 hover:bg-green-600 rounded cursor-pointer">
-            Orders
-          </li>
-
-          <li className="p-3 hover:bg-green-600 rounded cursor-pointer">
-            Users
-          </li>
-
-        </ul>
+  <Link to="/admin/users">
+    <li className="p-3 hover:bg-green-600 rounded cursor-pointer">Users</li>
+  </Link>
+</ul>
 
       </div>
 
