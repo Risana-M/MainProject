@@ -13,6 +13,11 @@ export const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    // 🔒 validation
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Please fill all fields" });
+    }
+
     const userExists = await User.findOne({ email });
 
     if (userExists) {
@@ -25,7 +30,7 @@ export const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      isActive: true // ✅ IMPORTANT
+      isActive: true,
     });
 
     res.status(201).json({
@@ -37,7 +42,8 @@ export const registerUser = async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error); // ✅ log error in Render logs
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
@@ -45,6 +51,11 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // 🔒 validation
+    if (!email || !password) {
+      return res.status(400).json({ message: "Please fill all fields" });
+    }
 
     const user = await User.findOne({ email });
 
@@ -61,19 +72,20 @@ export const loginUser = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
 
-    if (isMatch) {
-      res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        token: generateToken(user._id),
-      });
-    } else {
-      res.status(401).json({ message: "Invalid email or password" });
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      token: generateToken(user._id),
+    });
+
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error); // ✅ important for debugging
+    res.status(500).json({ message: "Server Error" });
   }
 };
