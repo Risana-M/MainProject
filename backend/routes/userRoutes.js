@@ -1,12 +1,11 @@
 import express from "express";
-const router = express.Router();
 import { getUsers, toggleUser } from "../controllers/userController.js";
+// Ensure this line is exactly like this:
 import { protect, admin } from "../middleware/authMiddleware.js";
 
-// This should be "/" because server.js already adds "/api/users"
-router.get("/", protect, admin, getUsers); 
+const router = express.Router();
 
-// This should be "/:id/toggle"
+router.get("/", protect, admin, getUsers);
 router.put("/:id/toggle", protect, admin, toggleUser);
 
 export default router;
