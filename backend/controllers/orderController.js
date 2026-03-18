@@ -3,27 +3,14 @@ import Order from "../models/Order.js";
 // CREATE NEW ORDER
 export const createOrder = async (req, res) => {
   try {
-    const { items, totalAmount } = req.body;
-
-    if (!items || items.length === 0) {
-      return res.status(400).json({ message: "No items in order" });
-    }
-
-    // Using req.user._id which comes from your 'protect' middleware
     const order = await Order.create({
-      user: req.user._id, 
-      items: items,
-      totalAmount: totalAmount,
-      isPaid: false // default value
+      user: req.user._id, // Must have the underscore
+      items: req.body.items,
+      totalAmount: req.body.totalAmount,
     });
-
     res.status(201).json(order);
   } catch (error) {
-    console.error("Order Creation Error:", error);
-    res.status(500).json({ 
-      message: "Failed to create order", 
-      error: error.message 
-    });
+    res.status(500).json({ message: "Failed to create order", error: error.message });
   }
 };
 

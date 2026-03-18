@@ -1,19 +1,19 @@
 import express from "express";
 import { createOrder, getUserOrders, getAllOrders } from "../controllers/orderController.js";
+import { protect, admin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// TEST ROUTE
-router.get("/test", (req, res) => {
-  res.send("Order route working ✅");
-});
+// This handles POST to /api/orders
+router.post("/", protect, createOrder); 
 
-router.post("/", createOrder);
-router.get("/", getUserOrders);
-router.get("/all", getAllOrders);
+// This handles GET to /api/orders/myorders (Fixes your 404)
+router.get("/myorders", protect, getUserOrders);
+
+// Admin route
+router.get("/all", protect, admin, getAllOrders);
 
 export default router;
-
 
 
 // import express from "express";

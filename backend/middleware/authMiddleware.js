@@ -50,7 +50,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
-// This protects routes for logged-in users
 export const protect = async (req, res, next) => {
   let token = req.headers.authorization;
 
@@ -59,28 +58,19 @@ export const protect = async (req, res, next) => {
       token = token.split(" ")[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       
-      // Fetch the user
-      req.user = await User.findById(decoded.id).select("-password");
+      // Look for the user
+      const user = await User.findById(decoded.id).select("-password");
 
-      // Check if user still exists in database
-      if (!req.user) {
-        return res.status(401).json({ message: "User not found, not authorized" });
+      if (!user) {
+        return res.status(401).json({ message: "Not authorized, user not found" });
       }
 
-      return next(); // Successfully move to the controller
+      req.user = user; // Set the user
+      return next(); // Move to controller
     } catch (error) {
       return res.status(401).json({ message: "Not authorized, token failed" });
     }
   } else {
     return res.status(401).json({ message: "Not authorized, no token" });
-  }
-};
-
-// Protects routes for Admin only
-export const admin = (req, res, next) => {
-  if (req.user && req.user.role === "admin") {
-    next();
-  } else {
-    res.status(403).json({ message: "Not authorized as an admin" });
   }
 };
